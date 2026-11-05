@@ -1,3 +1,4 @@
+param([switch]$Release)
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path 'port0ad').Path
 $android = Join-Path $root 'android'
@@ -10,7 +11,15 @@ $keytool = Join-Path $jdk 'bin\keytool.exe'
 $python = 'C:\Users\ThinkPad Yoga\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe'
 
 Set-Location $android
-Remove-Item -Recurse -Force classes, dex, compiled.zip, unsigned.apk, aligned.apk, app.apk -ErrorAction SilentlyContinue
+$manifest = 'AndroidManifest.xml'
+$output = 'app.apk'
+if ($Release) {
+  $manifest = 'AndroidManifest.release.xml'
+  $output = 'app-release.apk'
+  (Get-Content 'AndroidManifest.xml' -Raw).Replace('android:debuggable="true"', 'android:debuggable="false"') |
+    Set-Content $manifest -Encoding utf8
+}
+Remove-Item -Recurse -Force classes, dex, compiled.zip, unsigned.apk, aligned.apk, $output -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force classes, dex | Out-Null
 
 $javaFiles = Get-ChildItem -Recurse -Filter *.java java | ForEach-Object { $_.FullName }
@@ -24,7 +33,7 @@ if ($LASTEXITCODE -ne 0) { throw "d8 failed" }
 & (Join-Path $bt 'aapt2.exe') compile --dir res -o compiled.zip
 if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed" }
 
-& (Join-Path $bt 'aapt2.exe') link -o unsigned.apk -I $jar --manifest AndroidManifest.xml `
+& (Join-Path $bt 'aapt2.exe') link -o unsigned.apk -I $jar --manifest $manifest `
   --min-sdk-version 24 --target-sdk-version 36 --version-code 1 --version-name 0.28.0-android-m0 compiled.zip
 if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed" }
 
@@ -49,16 +58,24 @@ if ($LASTEXITCODE -ne 0) { throw "zip step failed" }
 & (Join-Path $bt 'zipalign.exe') -f -p 4 unsigned.apk aligned.apk
 if ($LASTEXITCODE -ne 0) { throw "zipalign failed" }
 
-$ks = Join-Path $android 'debug.keystore'
-if (-not (Test-Path $ks)) {
-  & $keytool -genkeypair -v -keystore $ks -storepass android -keypass android `
-    -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 `
-    -dname "CN=Android Debug,O=Android,C=US"
-  if ($LASTEXITCODE -ne 0) { throw "keytool failed" }
+if ($Release) {
+  $ks = Join-Path $android 'release.keystore'
+  if (-not (Test-Path $ks)) { throw "release.keystore is missing" }
+  & (Join-Path $bt 'apksigner.bat') sign --ks $ks --ks-pass 'pass:0adAndroidRelease2026!' `
+    --key-pass 'pass:0adAndroidRelease2026!' --ks-key-alias zeroad --out $output aligned.apk
+  if ($LASTEXITCODE -ne 0) { throw "apksigner failed" }
+} else {
+  $ks = Join-Path $android 'debug.keystore'
+  if (-not (Test-Path $ks)) {
+    & $keytool -genkeypair -v -keystore $ks -storepass android -keypass android `
+      -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 `
+      -dname "CN=Android Debug,O=Android,C=US"
+    if ($LASTEXITCODE -ne 0) { throw "keytool failed" }
+  }
+
+  & (Join-Path $bt 'apksigner.bat') sign --ks $ks --ks-pass pass:android --key-pass pass:android `
+    --out $output aligned.apk
+  if ($LASTEXITCODE -ne 0) { throw "apksigner failed" }
 }
 
-& (Join-Path $bt 'apksigner.bat') sign --ks $ks --ks-pass pass:android --key-pass pass:android `
-  --out app.apk aligned.apk
-if ($LASTEXITCODE -ne 0) { throw "apksigner failed" }
-
-Get-Item app.apk | Select-Object FullName, Length
+Get-Item $output | Select-Object FullName, Length
