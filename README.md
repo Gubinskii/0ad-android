@@ -37,8 +37,9 @@ path: Java sets `ZEROAD_ANDROID_DATA` and `Paths.cpp` reads it.**
 - `third_party/sdl2-build-android/libSDL2.so` — 6.2 MB, SDL2 2.30.9 for Android.
 - `third_party/gloox/lib/libgloox.so` — 1.46 MB, gloox 1.0.28 for Android.
 - `0ad-0.28.0/binaries/system/libpyrogenesis.so` — 8.8 MB, exports `pyrogenesis_main`.
-- `android/app.apk` — 2.07 GB debug APK, versionCode 36; full menu, maps, terrain,
-  actors, skins, materials, animations, audio and shadows.
+- `android/app-release.apk` — 2.07 GB release-signed APK, versionCode 36; full menu,
+  maps, terrain, actors, skins, materials, animations, audio and shadows.
+- `android/app.apk` — local debug APK used during development.
 - `android/main0.png` — main menu on the Galaxy Z Flip 6.
 - `android/menu.png` — screenshot of the in-game main menu (emulator).
 - `0ad-data/` — 3.6 GB extracted game data; `0ad-data-menu/` — 167 MB menu subset.

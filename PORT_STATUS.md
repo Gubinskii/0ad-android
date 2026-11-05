@@ -4,7 +4,7 @@
 Здесь — **настоящий порт 0 A.D./Pyrogenesis**: исходники v0.28.0, Android NDK,
 кросс-компиляция движка и будущий APK.
 
-**Статус: APK v36 — данные берутся из `ZEROAD_ANDROID_DATA` (путь задаёт Java), хардкод пакета убран.**
+**Статус: APK v36 — release-подпись, данные берутся из `ZEROAD_ANDROID_DATA`.**
 
 ## Что уже сделано
 
@@ -29,7 +29,7 @@
 | **gloox 1.0.28** | `libgloox.so` — 1,46 МБ, aarch64 (без TLS/сжатия) |
 | **`libpyrogenesis.so`** | **8,8 МБ**, AArch64, экспортирует `pyrogenesis_main`; 26 NEEDED-библиотек |
 | **SpiderMonkey 128.13.0** | `libmozjs128-release.so` — **16 МБ**, `libmozjs128-rust.a` — 47 МБ, `include-release/`, aarch64 |
-| **APK** | `android/app.apk` — **2,07 ГБ**, versionCode **36**, debug-signed; полный набор графики/карт/анимаций/audio |
+| **APK** | `android/app.apk` — debug; `android/app-release.apk` — **2,07 ГБ**, versionCode **36**, release-signed (`CN=0 A.D. Android Port`); полный набор графики/карт/анимаций/audio |
 | **Путь данных** | `PyrogenesisActivity` задаёт `ZEROAD_ANDROID_DATA`; `Paths.cpp` читает env, fallback — старый путь |
 | **Сборка** | `build-engine-android.sh` не пересобирает `libgraphics.a`; для правок рендера нужен `build-graphics-android.sh`, иначе APK линкуется со старым кодом |
 | **Меню** | главное меню и Match Setup открываются на Flip 6; скриншоты `android/v11.png`, `android/v12.png` |
