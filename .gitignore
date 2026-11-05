@@ -1,0 +1,41 @@
+# Game data and build outputs are far too large for Git.
+0ad-data/
+0ad-data-min/
+0ad-data-menu/
+0ad-*.tar.xz
+
+# Upstream libraries/artifacts are restored by docs/BUILD_ANDROID.md.
+0ad-0.28.0/binaries/
+0ad-0.28.0/build/
+0ad-0.28.0/libraries/
+
+# Android build outputs and packaged data.
+android/assets/
+android/jniLibs/
+android/app.apk
+android/*.apk
+android/app-release.apk
+android/*.idsig
+android/.gradle/
+android/build/
+
+# Native build leftovers.
+third_party/
+**/*.o
+**/*.a
+**/*.so
+**/*.d
+**/obj/
+**/binaries/system/
+
+# Signing material is never committed.
+*.keystore
+*.jks
+*.p12
+
+# Local screenshots/logs.
+android/screen*.png
+android/menu*.png
+android/*back*.png
+android/*.log
+*.log
