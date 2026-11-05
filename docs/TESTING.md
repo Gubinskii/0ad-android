@@ -17,10 +17,17 @@ minutes:
 | 4 min | 1.06 GB | 1.15 GB | 35.7 °C | 0 | 72% |
 | 6 min | 1.09 GB | 1.17 GB | 36.1 °C | 0 | 77% |
 | 8 min | 1.13 GB | 1.21 GB | 36.8 °C | 0 | — |
+| 12 min | 1.24 GB | 1.33 GB | 37.7 °C | 0 | — |
+| 16 min | 1.29 GB | 1.37 GB | 37.8 °C | 0 | — |
+| 20 min | 1.41 GB | 1.49 GB | 38.6 °C | 1 | — |
+| 24 min | 1.49 GB | 1.57 GB | 39.3 °C | 1 | — |
+| 28 min | 1.51 GB | 1.59 GB | 39.6 °C | 1 | — |
 
-The process stayed alive, no native crash, no ANR. Memory growth is consistent
-with texture/cache working sets rather than an immediate leak; a longer soak
-test (30+ minutes) is still recommended.
+The process stayed alive, no native crash, no ANR. PSS grew from 1.02 GB to
+1.51 GB over 28 minutes, then nearly plateaued at the end. Thermal status went
+from 0 to 1 (light throttling) at ~38.6 °C. A 30+ minute soak and a native-heap
+profile are still recommended; the growth is consistent with lazy texture/AI
+caches but is larger than ideal.
 
 ## Known residual log noise
 

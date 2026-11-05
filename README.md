@@ -3,8 +3,8 @@
 This directory is the **real port workspace**, separate from the fan-made mobile RTS
 in `../zeroad-mobile`.
 
-**Status: release-signed build on the Flip 6. An 8-minute AI match stayed alive
-(PSS 1.13 GB, 36.8 °C, thermal status 0) and the data path is dynamic.**
+**Status: release-signed build on the Flip 6. A 28-minute AI match stayed alive
+(PSS 1.51 GB, 39.6 °C, thermal status 1). The data path is dynamic.**
 
 - [PORT_STATUS.md](PORT_STATUS.md) — what compiles, what is broken, next milestones.
 - [sources.md](sources.md) — source/NDK checksums and references.
