@@ -29,6 +29,12 @@ from 0 to 1 (light throttling) at ~38.6 °C. A 30+ minute soak and a native-heap
 profile are still recommended; the growth is consistent with lazy texture/AI
 caches but is larger than ideal.
 
+## v37 memory mitigation
+
+v37 forces `textures.quality <= 1` on Android (drops one mip level) and makes the
+cache loader use an existing `.cached.dds` even when the source PNG is absent.
+A new 28-minute table should be collected on v37 before comparing numbers.
+
 ## Known residual log noise
 
 Debug builds still report a handful of optional assets that exist only as

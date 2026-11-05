@@ -564,7 +564,12 @@ public:
 
 		if (!texture->m_Properties.m_IgnoreQuality)
 		{
-			const int quality{g_ConfigDB.Get("textures.quality", 2)};
+			int quality{g_ConfigDB.Get("textures.quality", 2)};
+#if OS_ANDROID
+			// Phone panels are small; dropping one mip level saves a large
+			// amount of native/GPU memory during long matches.
+			quality = std::min(quality, 1);
+#endif
 			if (quality == 1)
 			{
 				if (MIPLevelCount > 1 && std::min(width, height) > 8)

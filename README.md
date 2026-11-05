@@ -3,8 +3,9 @@
 This directory is the **real port workspace**, separate from the fan-made mobile RTS
 in `../zeroad-mobile`.
 
-**Status: release-signed build on the Flip 6. A 28-minute AI match stayed alive
-(PSS 1.51 GB, 39.6 °C, thermal status 1). The data path is dynamic.**
+**Status: release-signed v37 on the Flip 6. Android textures are capped at medium
+to reduce native/GPU memory; cache-loader falls back to `.cached.dds`. An earlier
+28-minute soak stayed alive at 1.51 GB PSS / 39.6 °C / thermal 1.**
 
 - [PORT_STATUS.md](PORT_STATUS.md) — what compiles, what is broken, next milestones.
 - [sources.md](sources.md) — source/NDK checksums and references.
@@ -38,7 +39,7 @@ in `../zeroad-mobile`.
 - `third_party/sdl2-build-android/libSDL2.so` — 6.2 MB, SDL2 2.30.9 for Android.
 - `third_party/gloox/lib/libgloox.so` — 1.46 MB, gloox 1.0.28 for Android.
 - `0ad-0.28.0/binaries/system/libpyrogenesis.so` — 8.8 MB, exports `pyrogenesis_main`.
-- `android/app-release.apk` — 2.07 GB release-signed APK, versionCode 36; full menu,
+- `android/app-release.apk` — 2.07 GB release-signed APK, versionCode 37; full menu,
   maps, terrain, actors, skins, materials, animations, audio and shadows.
 - `android/app.apk` — local debug APK used during development.
 - `android/main0.png` — main menu on the Galaxy Z Flip 6.

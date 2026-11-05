@@ -38,12 +38,22 @@ Status CCacheLoader::TryLoadingCached(const VfsPath& sourcePath, const MD5& init
 {
 	VfsPath archiveCachePath = ArchiveCachePath(sourcePath);
 
-	// Try the archive cache file first
+	// Try the archive cache file first. On Android the shipped data often
+	// contains only the .cached.dds and no .png source; use the cache
+	// unconditionally when it exists instead of reporting a missing source.
+#if defined(__ANDROID__)
+	if (m_VFS->GetFileInfo(archiveCachePath, nullptr) >= 0)
+	{
+		loadPath = archiveCachePath;
+		return INFO::OK;
+	}
+#else
 	if (CanUseArchiveCache(sourcePath, archiveCachePath))
 	{
 		loadPath = archiveCachePath;
 		return INFO::OK;
 	}
+#endif
 
 	// Fail if no source or archive cache
 	// Note: this is not always an error case, because for instance there
